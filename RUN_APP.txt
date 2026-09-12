@@ -1,0 +1,55 @@
+EARLY CANCER PREDICTION APP
+============================
+
+These instructions are for Windows PowerShell.
+Run all commands from the project root folder:
+
+C:\Users\achin\Desktop\Stuff\EPICS\Early-Cancer-Prediction-main
+
+1. Open PowerShell and move to the project folder
+--------------------------------------------------
+cd "C:\Users\achin\Desktop\Stuff\EPICS\Early-Cancer-Prediction-main"
+
+2. Create a virtual environment
+--------------------------------
+python -m venv .venv
+
+3. Activate the virtual environment
+------------------------------------
+Set-ExecutionPolicy -Scope Process Bypass
+.\.venv\Scripts\Activate.ps1
+
+4. Upgrade pip
+--------------
+python -m pip install --upgrade pip
+
+5. Install all required libraries
+----------------------------------
+python -m pip install -r requirements.txt
+
+The requirements file installs the machine-learning libraries and Streamlit.
+TensorFlow is large and may take several minutes to install.
+
+6. Start the application
+------------------------
+python -m streamlit run app.py
+
+7. Open the application
+-----------------------
+Streamlit normally opens the browser automatically. If it does not, open:
+
+http://localhost:8501
+
+The application provides three workflows:
+- Cervical risk assessment using the supplied tabular models
+- Oral cancer image classification
+- Brain-tumor image classification
+
+Notes
+-----
+- Keep the Dataset and Models folders in their original locations.
+- The app must be started from the project root, or use the absolute app.py path.
+- The brain-tumor workflow requires TensorFlow and may take longer to load.
+- This application is for research and education only. It is not a medical diagnosis.
+
+To stop the application, return to PowerShell and press Ctrl+C.
