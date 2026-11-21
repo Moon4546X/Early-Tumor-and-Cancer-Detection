@@ -74,9 +74,8 @@ def load_joblib_model(model_name):
 
 @st.cache_resource
 def load_brain_model(model_name):
-    import tensorflow as tf
-
-    return joblib.load(MODELS / model_name)
+    import keras
+    return keras.models.load_model(MODELS / model_name)
 
 
 def cervical_training_scaler(features):
@@ -95,7 +94,9 @@ def show_result(title, detail, probability=None):
         unsafe_allow_html=True,
     )
     if probability is not None:
-        st.progress(float(probability), text=f"Model confidence: {probability:.1%}")
+        # Clamp to [0, 1] — some saved models return decision scores outside this range
+        clamped = max(0.0, min(1.0, float(probability)))
+        st.progress(clamped, text=f"Model confidence: {clamped:.1%}")
 
 
 def render_cervical():
@@ -149,10 +150,8 @@ def render_cervical():
 def render_oral():
     st.header("Oral image classification")
     st.write("Upload an oral image for classification with one of the supplied image models.")
-    selected_model = st.selectbox(
-        "Model",
-        {"Random forest": "oc_rf_model", "SVM": "oc_svm_model", "Decision tree": "oc_dt_model"},
-    )
+    model_options = {"Random forest": "oc_rf_model", "SVM": "oc_svm_model", "Decision tree": "oc_dt_model"}
+    selected_model = st.selectbox("Model", list(model_options))
     uploaded = st.file_uploader("Upload a JPG or PNG image", type=["jpg", "jpeg", "png"])
     if uploaded is None:
         st.info("Choose an image to enable prediction.")
@@ -161,7 +160,7 @@ def render_oral():
     image = Image.open(uploaded).convert("RGB")
     st.image(image, caption="Uploaded image", width=360)
     if st.button("Classify oral image", type="primary"):
-        model = load_joblib_model(selected_model)
+        model = load_joblib_model(model_options[selected_model])
         pixels = np.asarray(image.resize((64, 64)), dtype=np.float32)
         prediction_input = pixels.reshape(1, -1)
         prediction = int(model.predict(prediction_input)[0])
@@ -178,10 +177,8 @@ def render_oral():
 def render_brain():
     st.header("Brain-tumor image classification")
     st.write("Upload an MRI image for classification with a supplied CNN model.")
-    selected_model = st.selectbox(
-        "Model",
-        {"CNN": "bt-cnn.joblib", "CNN 2": "bt-cnn2.joblib", "MobileNet": "bt-mobilenet.joblib"},
-    )
+    model_options = {"CNN": "bt-cnn.keras", "CNN 2": "bt-cnn2.keras", "MobileNet": "bt-mobilenet.keras"}
+    selected_model = st.selectbox("Model", list(model_options))
     uploaded = st.file_uploader("Upload a JPG or PNG MRI image", type=["jpg", "jpeg", "png"])
     if uploaded is None:
         st.info("Choose an MRI image to enable prediction.")
@@ -191,7 +188,7 @@ def render_brain():
     st.image(image, caption="Uploaded MRI image", width=360)
     if st.button("Classify brain image", type="primary"):
         with st.spinner("Loading TensorFlow model and classifying image..."):
-            model = load_brain_model(selected_model)
+            model = load_brain_model(model_options[selected_model])
             pixels = np.asarray(image.resize((180, 180)), dtype=np.float32)
             prediction_input = np.expand_dims(pixels, axis=0)
             raw_prediction = np.asarray(model.predict(prediction_input, verbose=0))
