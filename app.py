@@ -37,10 +37,13 @@ st.markdown(
 
     :root {
         --ink: #0f172a;
-        --muted: #64748b;
-        --bg: #f8fafc;
+        --ink-strong: #020617;
+        --muted: #475569;
+        --muted-light: #64748b;
+        --bg: #ffffff;
         --card: #ffffff;
-        --border: #e2e8f0;
+        --border: #cbd5e1;
+        --border-strong: #94a3b8;
         --primary: #0ea5e9;
         --primary-hover: #0284c7;
         --secondary: #10b981;
@@ -48,21 +51,25 @@ st.markdown(
         --danger: #ef4444;
         --mint: #dcfce7;
         --slate: #f1f5f9;
-        --shadow: 0 10px 40px -12px rgba(0, 0, 0, 0.08);
-        --shadow-hover: 0 20px 50px -12px rgba(0, 0, 0, 0.12);
-        --radius: 16px;
-        --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        --shadow: 0 4px 20px -4px rgba(2, 6, 23, 0.06);
+        --shadow-hover: 0 8px 30px -6px rgba(2, 6, 23, 0.1);
+        --radius: 12px;
+        --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    html, body, [class*="css"] {
-        font-family: 'Inter', sans-serif;
-        background: var(--bg);
-        color: var(--ink);
+    html, body, [class*="css"], .stApp {
+        font-family: 'Inter', sans-serif !important;
+        background: var(--bg) !important;
+        color: var(--ink) !important;
     }
 
-    h1, h2, h3, h4 {
-        font-family: 'Plus Jakarta Sans', sans-serif;
-        color: var(--ink);
+    h1, h2, h3, h4, h5, h6 {
+        font-family: 'Plus Jakarta Sans', sans-serif !important;
+        color: var(--ink-strong) !important;
+    }
+
+    p, span, div, label {
+        color: var(--ink) !important;
     }
 
     /* Hide Streamlit default chrome */
@@ -77,8 +84,8 @@ st.markdown(
         top: 0; left: 0; width: 100%; height: 100%;
         z-index: -1;
         background:
-            radial-gradient(circle at 10% 20%, rgba(14, 165, 233, 0.18), transparent 45%),
-            radial-gradient(circle at 90% 80%, rgba(16, 185, 129, 0.12), transparent 45%);
+            radial-gradient(circle at 10% 20%, rgba(14, 165, 233, 0.10), transparent 45%),
+            radial-gradient(circle at 90% 80%, rgba(16, 185, 129, 0.08), transparent 45%);
     }
 
     /* Hero */
@@ -91,22 +98,23 @@ st.markdown(
         display: inline-flex;
         align-items: center;
         gap: 0.5rem;
-        font-size: 0.8rem;
-        font-weight: 700;
-        letter-spacing: 0.14em;
+        font-size: 0.75rem;
+        font-weight: 800;
+        letter-spacing: 0.16em;
         text-transform: uppercase;
         color: var(--primary);
         margin-bottom: 0.75rem;
     }
     .hero h1 {
-        font-size: clamp(2.2rem, 5vw, 3.5rem);
+        font-size: clamp(2rem, 5vw, 3rem);
         line-height: 1.1;
         margin: 0.25rem 0 0.75rem;
         letter-spacing: -0.02em;
+        color: var(--ink-strong);
     }
     .hero p {
         color: var(--muted);
-        font-size: 1.1rem;
+        font-size: 1.05rem;
         max-width: 700px;
         line-height: 1.6;
         margin: 0;
@@ -114,13 +122,15 @@ st.markdown(
 
     /* Sidebar */
     section[data-testid="stSidebar"] {
-        background: var(--card);
+        background: #f8fafc !important;
         border-right: 1px solid var(--border);
     }
-    section[data-testid="stSidebar"] h2,
-    section[data-testid="stSidebar"] h3,
-    section[data-testid="stSidebar"] .stMarkdown p {
-        font-family: 'Inter', sans-serif;
+    section[data-testid="stSidebar"] * {
+        color: var(--ink) !important;
+    }
+    section[data-testid="stSidebar"] .stMarkdown p,
+    section[data-testid="stSidebar"] .stCaption {
+        color: var(--muted) !important;
     }
     .sidebar-brand {
         padding: 1.25rem 1rem;
@@ -142,9 +152,9 @@ st.markdown(
     }
     .sidebar-brand .brand-name {
         font-family: 'Plus Jakarta Sans', sans-serif;
-        font-weight: 700;
+        font-weight: 800;
         font-size: 1.25rem;
-        color: var(--ink);
+        color: var(--ink-strong);
         vertical-align: middle;
     }
     .sidebar-divider {
@@ -159,6 +169,17 @@ st.markdown(
         line-height: 1.5;
     }
 
+    /* Widget labels - ensure readability */
+    .stSelectbox label,
+    .stNumberInput label,
+    .stFileUploader label,
+    .stRadio label,
+    .stTextInput label {
+        color: var(--ink) !important;
+        font-weight: 600 !important;
+        font-size: 0.9rem !important;
+    }
+
     /* Cards */
     .card {
         background: var(--card);
@@ -171,7 +192,7 @@ st.markdown(
     }
     .card:hover {
         box-shadow: var(--shadow-hover);
-        border-color: #cbd5e1;
+        border-color: var(--border-strong);
     }
     .card-header {
         display: flex;
@@ -181,9 +202,9 @@ st.markdown(
     }
     .card-title {
         font-family: 'Plus Jakarta Sans', sans-serif;
-        font-weight: 700;
+        font-weight: 800;
         font-size: 1.25rem;
-        color: var(--ink);
+        color: var(--ink-strong);
     }
     .card-subtitle {
         color: var(--muted);
@@ -194,9 +215,9 @@ st.markdown(
     /* Section headings */
     .section-title {
         font-family: 'Plus Jakarta Sans', sans-serif;
-        font-weight: 700;
+        font-weight: 800;
         font-size: 1.5rem;
-        color: var(--ink);
+        color: var(--ink-strong);
         margin: 2rem 0 1rem;
         display: flex;
         align-items: center;
@@ -209,7 +230,7 @@ st.markdown(
         padding: 1.75rem 2rem;
         margin: 1.5rem 0;
         box-shadow: var(--shadow);
-        border: 1px solid transparent;
+        border: 1px solid var(--border);
         animation: slideUp 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     }
     @keyframes slideUp {
@@ -217,31 +238,33 @@ st.markdown(
         to { opacity: 1; transform: translateY(0); }
     }
     .result--positive {
-        background: #fef2f2;
-        border-color: #fecaca;
+        background: #fff7f7;
+        border-color: #fca5a5;
         border-left: 5px solid var(--danger);
     }
     .result--negative {
         background: #f0fdf4;
-        border-color: #bbf7d0;
+        border-color: #86efac;
         border-left: 5px solid var(--secondary);
     }
     .result h3 {
         margin: 0 0 0.5rem;
         font-size: 1.25rem;
-        font-weight: 700;
+        font-weight: 800;
+        color: var(--ink-strong);
     }
     .result p {
         margin: 0 0 1rem;
         color: var(--muted);
         font-size: 0.95rem;
+        font-weight: 500;
     }
     .result .confidence-label {
-        font-size: 0.8rem;
-        font-weight: 600;
+        font-size: 0.75rem;
+        font-weight: 700;
         text-transform: uppercase;
-        letter-spacing: 0.08em;
-        color: var(--muted);
+        letter-spacing: 0.1em;
+        color: var(--muted-light);
         margin-bottom: 0.4rem;
         display: block;
     }
@@ -253,7 +276,7 @@ st.markdown(
         border: none;
         border-radius: 10px;
         padding: 0.75rem 1.5rem;
-        font-weight: 600;
+        font-weight: 700;
         font-size: 0.95rem;
         font-family: 'Inter', sans-serif;
         transition: var(--transition);
@@ -262,29 +285,29 @@ st.markdown(
     .stButton > button:hover {
         background: var(--primary-hover);
         transform: translateY(-1px);
-        box-shadow: 0 8px 24px -8px rgba(14, 165, 233, 0.35);
+        box-shadow: 0 4px 12px -2px rgba(14, 165, 233, 0.35);
     }
     .stButton > button:active {
         transform: translateY(0);
     }
 
     .stSelectbox > div > div,
-    .stNumberInput input,
-    .stFileUploader > section > button {
+    .stNumberInput input {
         border-radius: 10px;
-        border: 1px solid var(--border);
+        border: 1px solid var(--border-strong);
         background: var(--card);
+        color: var(--ink) !important;
         transition: var(--transition);
     }
     .stSelectbox > div > div:focus-within,
     .stNumberInput input:focus {
         border-color: var(--primary);
-        box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1);
+        box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.15);
     }
 
     /* File uploader */
     .stFileUploader > section {
-        border: 2px dashed var(--border);
+        border: 2px dashed var(--border-strong);
         border-radius: var(--radius);
         padding: 2.5rem 2rem;
         text-align: center;
@@ -293,19 +316,19 @@ st.markdown(
     }
     .stFileUploader > section:hover {
         border-color: var(--primary);
-        background: #eff6ff;
+        background: #e0f2fe;
     }
     .stFileUploader > section > button {
         background: transparent !important;
         color: var(--primary) !important;
         border: none !important;
-        font-weight: 600;
+        font-weight: 700;
     }
 
     /* Disclaimer */
     .disclaimer {
-        font-size: 0.78rem;
-        color: var(--muted);
+        font-size: 0.8rem;
+        color: var(--muted-light);
         margin-top: 1.5rem;
         padding-top: 1rem;
         border-top: 1px solid var(--border);
@@ -333,11 +356,11 @@ st.markdown(
         gap: 0.5rem;
         padding: 0.4rem 0.85rem;
         border-radius: 999px;
-        border: 1px solid var(--border);
+        border: 1px solid var(--border-strong);
         background: var(--card);
         font-size: 0.85rem;
         color: var(--ink);
-        font-weight: 500;
+        font-weight: 600;
         margin-bottom: 0.5rem;
         transition: var(--transition);
     }
@@ -349,12 +372,12 @@ st.markdown(
     .empty-state {
         text-align: center;
         padding: 3rem 1rem;
-        color: var(--muted);
+        color: var(--muted-light);
     }
     .empty-state .icon {
         font-size: 3rem;
         margin-bottom: 1rem;
-        opacity: 0.5;
+        opacity: 0.6;
     }
     </style>
     """,
